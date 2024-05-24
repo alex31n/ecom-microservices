@@ -17,6 +17,6 @@ public class TestController {
     @GetMapping
     @ResponseBody
     public ResponseEntity<?> test() {
-        return ResponseEntity.ok("This is the test API!");
+        return ResponseEntity.ok("This is the test API! 3");
     }
 }

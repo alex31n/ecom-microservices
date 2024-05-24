@@ -1,0 +1,23 @@
+version: '3'
+
+
+services:
+
+  product:
+    container_name: product
+    ports:
+      - "${PRODUCT_SERVICE_PORT}:${PRODUCT_SERVICE_PORT}"
+    environment:
+      APPLICATION_PROFILE: ${APPLICATION_PROFILE}
+      SERVER_PORT: ${PRODUCT_SERVICE_PORT}
+#      DATABASE_URI: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongo:27017/${QUESTION_DATABASE}?authSource=admin
+      # IAM_SERVICE_URL: http://keycloak:${IAM_KEYCLOAK_PORT}
+    restart: unless-stopped
+    networks:
+      - net_backend
+#    depends_on:
+#      - mongo
+
+networks:
+  net_backend:
+    driver: bridge

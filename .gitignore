@@ -2,5 +2,6 @@
 /.idea/
 
 
-# Ignore mongoDB data for database
+# Ignore folders
+temp/
 database/
