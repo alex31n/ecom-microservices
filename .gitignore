@@ -1,0 +1,6 @@
+# IntelliJ IDEA config
+/.idea/
+
+
+# Ignore mongoDB data for database
+database/mongodb/data
