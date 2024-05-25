@@ -18,17 +18,17 @@ services:
       - *maven-volume
       - ./service-registry:/usr/src/app:rw
 
-  gateway:
-    <<: *default-app
-    volumes:
-      - *maven-volume
-      - ./api-gateway:/usr/src/app:rw
-
   config-server:
     <<: *default-app
     volumes:
       - *maven-volume
       - ./config-server:/usr/src/app:rw
+
+  gateway:
+    <<: *default-app
+    volumes:
+      - *maven-volume
+      - ./api-gateway:/usr/src/app:rw
 
   product:
     <<: *default-app

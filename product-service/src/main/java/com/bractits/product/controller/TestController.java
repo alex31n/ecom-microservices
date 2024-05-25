@@ -13,7 +13,7 @@ public class TestController {
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<?> test(@RequestParam("q") String q) {
-        return ResponseEntity.ok("This is the test API! "+q);
+    public ResponseEntity<?> test(@RequestParam(value = "q", required = false) String q) {
+        return ResponseEntity.ok("This is the test API!\\nPath: "+q+"\\n test message: ");
     }
 }

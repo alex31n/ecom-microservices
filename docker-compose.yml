@@ -3,6 +3,7 @@ version: '3'
 x-common-environment: &common-environment
   APPLICATION_PROFILE: ${APPLICATION_PROFILE}
   EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eureka:${EUREKA_SERVICE_PORT}/eureka
+  CONFIG_SERVER_URL: http://config-server:${CONFIG_SERVICE_PORT}
 
 #x-keycloak-service: &keycloak-service
 #  - KEYCLOAK_SERVICE=keycloak
@@ -20,19 +21,6 @@ services:
     networks:
       - net_backend
 
-  gateway:
-    container_name: gateway
-    ports:
-      - "${API_GATEWAY_SERVICE_PORT}:${API_GATEWAY_SERVICE_PORT}"
-    environment:
-      <<: *common-environment
-      SERVER_PORT: ${API_GATEWAY_SERVICE_PORT}
-    restart: unless-stopped
-    networks:
-      - net_backend
-    depends_on:
-      - eureka
-
   config-server:
     container_name: config-server
     ports:
@@ -45,6 +33,20 @@ services:
       - net_backend
     depends_on:
       - eureka
+
+  gateway:
+    container_name: gateway
+    ports:
+      - "${API_GATEWAY_SERVICE_PORT}:${API_GATEWAY_SERVICE_PORT}"
+    environment:
+      <<: *common-environment
+      SERVER_PORT: ${API_GATEWAY_SERVICE_PORT}
+    restart: unless-stopped
+    networks:
+      - net_backend
+    depends_on:
+      - eureka
+      - config-server
 
   product:
     container_name: product
@@ -59,7 +61,7 @@ services:
       - net_backend
     depends_on:
       - eureka
-#      - mongo
+      - config-server
 
 networks:
   net_backend:
