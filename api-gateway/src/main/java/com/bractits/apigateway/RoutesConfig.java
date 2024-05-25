@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class RoutesConfig {
 
     @Bean
-    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+    public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("product", p -> p.path("/product/**")
                         .filters(f -> f.rewritePath("/product/(?<segment>.*)", "/${segment}"))
