@@ -33,6 +33,19 @@ services:
     depends_on:
       - eureka
 
+  config-server:
+    container_name: config-server
+    ports:
+      - "${CONFIG_SERVICE_PORT}:${CONFIG_SERVICE_PORT}"
+    environment:
+      <<: *common-environment
+      SERVER_PORT: ${CONFIG_SERVICE_PORT}
+    restart: unless-stopped
+    networks:
+      - net_backend
+    depends_on:
+      - eureka
+
   product:
     container_name: product
     ports:

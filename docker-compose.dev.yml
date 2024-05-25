@@ -17,18 +17,21 @@ services:
     volumes:
       - *maven-volume
       - ./service-registry:/usr/src/app:rw
-#      - ${MAVEN_CONFIG_FOLDER}:/root/.m2   # comment this line if you do not want to use you local maven config
 
   gateway:
     <<: *default-app
     volumes:
       - *maven-volume
       - ./api-gateway:/usr/src/app:rw
-#      - ${MAVEN_CONFIG_FOLDER}:/root/.m2   # comment this line if you do not want to use you local maven config
+
+  config-server:
+    <<: *default-app
+    volumes:
+      - *maven-volume
+      - ./config-server:/usr/src/app:rw
 
   product:
     <<: *default-app
     volumes:
       - *maven-volume
       - ./product-service:/usr/src/app:rw
-#      - ${MAVEN_CONFIG_FOLDER}:/root/.m2   # comment this line if you do not want to use you local maven config
