@@ -5,3 +5,7 @@
 # Ignore folders
 temp/
 database/
+
+
+# Ignore local env
+config/.env.local

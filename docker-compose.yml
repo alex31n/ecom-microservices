@@ -20,6 +20,19 @@ services:
     networks:
       - net_backend
 
+  gateway:
+    container_name: gateway
+    ports:
+      - "${API_GATEWAY_SERVICE_PORT}:${API_GATEWAY_SERVICE_PORT}"
+    environment:
+      <<: *common-environment
+      SERVER_PORT: ${API_GATEWAY_SERVICE_PORT}
+    restart: unless-stopped
+    networks:
+      - net_backend
+    depends_on:
+      - eureka
+
   product:
     container_name: product
     ports:
@@ -34,8 +47,6 @@ services:
     depends_on:
       - eureka
 #      - mongo
-    links:
-      - "eureka"
 
 networks:
   net_backend:
