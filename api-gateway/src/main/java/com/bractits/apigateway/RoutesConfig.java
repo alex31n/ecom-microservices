@@ -12,10 +12,11 @@ public class RoutesConfig {
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("product", p -> p.path("/product/**")
+                /*.route("product", p -> p.path("/product/**")
                         .filters(f -> f.rewritePath("/product/(?<segment>.*)", "/${segment}"))
                         .uri("lb://PRODUCT-SERVICE")
-                )
+                )*/
+                .route("product", ProductRoute::route)
                 .build();
     }
 }
