@@ -1,0 +1,37 @@
+version: '3'
+
+x-default-app: &default-app
+  image: maven:3.9.4-eclipse-temurin-20-alpine
+  command: sh dev-run.sh
+  working_dir: /usr/src/app
+
+x-maven-volume: &maven-volume
+  ${MAVEN_CONFIG_FOLDER}:/root/.m2   # comment this line if you do not want to use you local maven config
+
+
+
+services:
+
+  eureka:
+    <<: *default-app
+    volumes:
+      - *maven-volume
+      - ./service-registry:/usr/src/app:rw
+
+  config-server:
+    <<: *default-app
+    volumes:
+      - *maven-volume
+      - ./config-server:/usr/src/app:rw
+
+  gateway:
+    <<: *default-app
+    volumes:
+      - *maven-volume
+      - ./api-gateway:/usr/src/app:rw
+
+  product:
+    <<: *default-app
+    volumes:
+      - *maven-volume
+      - ./product-service:/usr/src/app:rw

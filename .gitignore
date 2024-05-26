@@ -2,5 +2,10 @@
 /.idea/
 
 
-# Ignore mongoDB data for database
-database/mongodb/data
+# Ignore folders
+temp/
+database/
+
+
+# Ignore local env
+config/.env.local

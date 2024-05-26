@@ -1,0 +1,100 @@
+version: '3'
+
+x-common-environment: &common-environment
+  APPLICATION_PROFILE: ${APPLICATION_PROFILE}
+  EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eureka:${EUREKA_SERVICE_PORT}/eureka
+  CONFIG_SERVER_URL: http://config-server:${CONFIG_SERVICE_PORT}
+
+#x-keycloak-service: &keycloak-service
+#  - KEYCLOAK_SERVICE=keycloak
+
+services:
+
+  eureka:
+    container_name: eureka
+    ports:
+      - "${EUREKA_SERVICE_PORT}:${EUREKA_SERVICE_PORT}"
+    environment:
+      <<: *common-environment
+      SERVER_PORT: ${EUREKA_SERVICE_PORT}
+    restart: unless-stopped
+    networks:
+      - net_backend
+
+  config-server:
+    container_name: config-server
+    ports:
+      - "${CONFIG_SERVICE_PORT}:${CONFIG_SERVICE_PORT}"
+    environment:
+      <<: *common-environment
+      SERVER_PORT: ${CONFIG_SERVICE_PORT}
+    restart: unless-stopped
+    networks:
+      - net_backend
+    depends_on:
+      - eureka
+
+  gateway:
+    container_name: gateway
+    ports:
+      - "${API_GATEWAY_SERVICE_PORT}:${API_GATEWAY_SERVICE_PORT}"
+    environment:
+      <<: *common-environment
+      SERVER_PORT: ${API_GATEWAY_SERVICE_PORT}
+    restart: unless-stopped
+    networks:
+      - net_backend
+    depends_on:
+      - eureka
+      - config-server
+
+  product:
+    container_name: product
+    ports:
+      - "${PRODUCT_SERVICE_PORT}:${PRODUCT_SERVICE_PORT}"
+    environment:
+      <<: *common-environment
+      SERVER_PORT: ${PRODUCT_SERVICE_PORT}
+    #      DATABASE_URI: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongo:27017/${QUESTION_DATABASE}?authSource=admin
+    restart: unless-stopped
+    networks:
+      - net_backend
+    depends_on:
+      - eureka
+      - config-server
+
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    container_name: prometheus
+    volumes:
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+    networks:
+      - net_backend
+
+  grafana:
+    image: grafana/grafana:11.0.0
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SERVER_DOMAIN=localhost
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    #    env_file:
+    #      - ./env/grafana.env
+    restart: unless-stopped
+    networks:
+      - net_backend
+
+networks:
+  net_backend:
+    driver: bridge
+
+volumes:
+  grafana-storage: {}
