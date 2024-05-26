@@ -55,7 +55,7 @@ services:
     environment:
       <<: *common-environment
       SERVER_PORT: ${PRODUCT_SERVICE_PORT}
-#      DATABASE_URI: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongo:27017/${QUESTION_DATABASE}?authSource=admin
+    #      DATABASE_URI: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongo:27017/${QUESTION_DATABASE}?authSource=admin
     restart: unless-stopped
     networks:
       - net_backend
@@ -63,6 +63,38 @@ services:
       - eureka
       - config-server
 
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    container_name: prometheus
+    volumes:
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+    networks:
+      - net_backend
+
+  grafana:
+    image: grafana/grafana:11.0.0
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SERVER_DOMAIN=localhost
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    #    env_file:
+    #      - ./env/grafana.env
+    restart: unless-stopped
+    networks:
+      - net_backend
+
 networks:
   net_backend:
     driver: bridge
+
+volumes:
+  grafana-storage: {}
