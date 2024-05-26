@@ -8,7 +8,8 @@ public class ProductRoute {
 
     public static Buildable<Route> route(PredicateSpec p) {
         return p.path("/product/**")
-                .filters(f -> f.rewritePath("/product/(?<segment>.*)", "/${segment}"))
+                .filters(f -> f.circuitBreaker(c -> c.setName("productCircuitBreaker").setFallbackUri("forward:/productServiceFallback"))
+                        .rewritePath("/product/(?<segment>.*)", "/${segment}"))
                 .uri("lb://PRODUCT-SERVICE");
     }
 }
