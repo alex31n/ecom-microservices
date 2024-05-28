@@ -4,7 +4,7 @@
 
 # Ignore folders
 temp/
-database/
+/data/database/
 
 
 # Ignore local env

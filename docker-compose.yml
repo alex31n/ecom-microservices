@@ -56,6 +56,9 @@ services:
       <<: *common-environment
       SERVER_PORT: ${PRODUCT_SERVICE_PORT}
     #      DATABASE_URI: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongo:27017/${QUESTION_DATABASE}?authSource=admin
+      DATABASE_URI: jdbc:postgresql://product-db:${PRODUCT_DATABASE_PORT}/${PRODUCT_DATABASE}
+      DATABASE_USER: ${PRODUCT_DATABASE_USER}
+      DATABASE_PASSWORD: ${PRODUCT_DATABASE_PASSWORD}
     restart: unless-stopped
     networks:
       - net_backend
@@ -91,6 +94,19 @@ services:
     restart: unless-stopped
     networks:
       - net_backend
+
+  product-db:
+    image: postgres:16.3-alpine
+    container_name: product-db
+    environment:
+      POSTGRES_DB: ${PRODUCT_DATABASE}
+      POSTGRES_USER: ${PRODUCT_DATABASE_USER}
+      POSTGRES_PASSWORD: ${PRODUCT_DATABASE_PASSWORD}
+    volumes:
+      - ./data/database/postgresql/products:/var/lib/postgresql/data
+    ports:
+      - "${PRODUCT_DATABASE_PORT}:${PRODUCT_DATABASE_PORT}"
+    restart: unless-stopped
 
 networks:
   net_backend:
