@@ -8,4 +8,4 @@ temp/
 
 
 # Ignore local env
-config/env/.env.local
+/config/env/.env.local
