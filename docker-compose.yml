@@ -56,15 +56,20 @@ services:
       <<: *common-environment
       SERVER_PORT: ${PRODUCT_SERVICE_PORT}
     #      DATABASE_URI: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongo:27017/${QUESTION_DATABASE}?authSource=admin
-      DATABASE_URI: jdbc:postgresql://product-db:${PRODUCT_DATABASE_PORT}/${PRODUCT_DATABASE}
-      DATABASE_USER: ${PRODUCT_DATABASE_USER}
-      DATABASE_PASSWORD: ${PRODUCT_DATABASE_PASSWORD}
+#      DATABASE_URI: jdbc:postgresql://productdb:${PRODUCT_DATABASE_PORT}/${PRODUCT_DATABASE}
+#      DATABASE_USER: ${PRODUCT_DATABASE_USER}
+#      DATABASE_PASSWORD: ${PRODUCT_DATABASE_USER}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:${PRODUCT_DATABASE_PORT}/${PRODUCT_DATABASE}
+      SPRING_DATASOURCE_USERNAME: ${PRODUCT_DATABASE_USER}
+      SPRING_DATASOURCE_PASSWORD: ${PRODUCT_DATABASE_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
     restart: unless-stopped
     networks:
       - net_backend
     depends_on:
       - eureka
       - config-server
+      - productdb
 
   prometheus:
     image: prom/prometheus:v2.52.0
@@ -95,22 +100,25 @@ services:
     networks:
       - net_backend
 
-  product-db:
+  productdb:
     image: postgres:16.3-alpine
-    container_name: product-db
+    container_name: productdb
     environment:
       POSTGRES_DB: ${PRODUCT_DATABASE}
       POSTGRES_USER: ${PRODUCT_DATABASE_USER}
       POSTGRES_PASSWORD: ${PRODUCT_DATABASE_PASSWORD}
-    volumes:
-      - ./data/database/postgresql/products:/var/lib/postgresql/data
+#    volumes:
+#      - ./data/database/postgresql/products:/var/lib/postgresql/data
     ports:
-      - "${PRODUCT_DATABASE_PORT}:${PRODUCT_DATABASE_PORT}"
+      - "${PRODUCT_DATABASE_PORT}:5432"
     restart: unless-stopped
+    networks:
+      - net_backend
 
 networks:
   net_backend:
     driver: bridge
+#    external: true
 
 volumes:
   grafana-storage: {}
