@@ -1,6 +1,8 @@
 package com.bractits.search.utils.mapper;
 
 
+import com.bractits.search.data.dto.ProductDTO;
+import com.bractits.search.data.entity.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
@@ -10,7 +12,7 @@ public interface ProductMapper {
 
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-//    Product mapToEntity(ProductDTO dto);
+    Product mapToEntity(ProductDTO dto);
 
-//    ProductDTO mapToDto(Product entity);
+    ProductDTO mapToDto(Product entity);
 }
