@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 @Service
@@ -19,10 +20,18 @@ public class ProductService {
 
     private final ProductMapper mapper = ProductMapper.INSTANCE;
 
-    public ProductDTO create(ProductDTO productDTO){
+    public List<ProductDTO> findAll() {
+
+        return repository.findAll()
+                .stream()
+                .map(mapper::mapToDto)
+                .toList();
+    }
+
+    public ProductDTO create(ProductDTO productDTO) {
 
         return Stream.of(productDTO)
-                .peek(emp->emp.setId(null))
+                .peek(emp -> emp.setId(null))
                 .map(mapper::mapToEntity)
                 .map(repository::save)
                 .map(mapper::mapToDto)
@@ -30,11 +39,11 @@ public class ProductService {
                 .orElse(productDTO);
     }
 
-    public ProductDTO update(Long id, ProductDTO productDTO){
+    public ProductDTO update(Long id, ProductDTO productDTO) {
 
         return Stream.ofNullable(id)
                 .map(repository::findById)
-                .map(p-> p.orElseThrow(() -> ExceptionUtils.notFoundException("Product not found")))
+                .map(product -> product.orElseThrow(() -> ExceptionUtils.notFoundException("Product not found")))
                 .peek(product -> {
                     product.setTitle(productDTO.getTitle());
                     product.setDescription(productDTO.getDescription());

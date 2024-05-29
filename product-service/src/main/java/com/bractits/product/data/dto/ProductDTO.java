@@ -1,6 +1,5 @@
 package com.bractits.product.data.dto;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +18,6 @@ public class ProductDTO {
 
     private Long id;
 
-    @Column(name = "title", nullable = false, length = 100)
     @Size(max = 55)
     @NotBlank(message = "Title must be empty.")
     private String title;
