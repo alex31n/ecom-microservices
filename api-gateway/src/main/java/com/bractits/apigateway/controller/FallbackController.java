@@ -10,4 +10,11 @@ public class FallbackController {
     public String productServiceFallback(){
         return "Product service is down!";
     }
+
+    @RequestMapping("/searchServiceFallback")
+    public String searchServiceFallback(){
+        return "Search service is down!";
+    }
+
+
 }

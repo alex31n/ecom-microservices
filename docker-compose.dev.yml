@@ -35,3 +35,9 @@ services:
     volumes:
       - *maven-volume
       - ./product-service:/usr/src/app:rw
+
+  search:
+    <<: *default-app
+    volumes:
+      - *maven-volume
+      - ./search-service:/usr/src/app:rw

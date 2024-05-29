@@ -1,7 +1,6 @@
-package com.bractits.product.controller;
+package com.bractits.search.controller;
 
-import com.bractits.product.data.dto.ProductDTO;
-import com.bractits.product.service.ProductService;
+import com.bractits.search.data.dto.ProductDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,31 +14,31 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ProductController {
 
-    final private ProductService service;
+//    final private ProductService service;
 
-    @GetMapping
+    /*@GetMapping
     @ResponseBody
     public ResponseEntity<?> findAll(){
         return ResponseEntity.ok(
                 service.findAll()
         );
-    }
+    }*/
 
-    @PostMapping
+    /*@PostMapping
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> create(@Valid @RequestBody ProductDTO product){
         return ResponseEntity.ok(
                 service.create(product)
         );
-    }
+    }*/
 
-    @PutMapping("/{id}")
+    /*@PutMapping("/{id}")
     @ResponseBody
 
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody ProductDTO product){
         return ResponseEntity.ok(
                 service.update(id, product)
         );
-    }
+    }*/
 }

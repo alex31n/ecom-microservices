@@ -115,6 +115,40 @@ services:
     networks:
       - net_backend
 
+  search:
+    container_name: search
+    ports:
+      - "${SEARCH_SERVICE_PORT}:${SEARCH_SERVICE_PORT}"
+    environment:
+      <<: *common-environment
+      SERVER_PORT: ${SEARCH_SERVICE_PORT}
+      DATABASE_URI: jdbc:postgresql://host.docker.internal:${SEARCH_DATABASE_PORT}/${SEARCH_DATABASE}
+      DATABASE_USER: ${SEARCH_DATABASE_USER}
+      DATABASE_PASSWORD: ${SEARCH_DATABASE_PASSWORD}
+    restart: unless-stopped
+    networks:
+      - net_backend
+    depends_on:
+      - eureka
+      - config-server
+      - searchdb
+
+  searchdb:
+    image: postgres:16.3-alpine
+    container_name: searchdb
+    environment:
+      POSTGRES_DB: ${SEARCH_DATABASE}
+      POSTGRES_USER: ${SEARCH_DATABASE_USER}
+      POSTGRES_PASSWORD: ${SEARCH_DATABASE_PASSWORD}
+    volumes:
+      - ./data/database/postgresql/search:/var/lib/postgresql/data
+    ports:
+      - "${SEARCH_DATABASE_PORT}:5432"
+    restart: unless-stopped
+    networks:
+      - net_backend
+
+
 networks:
   net_backend:
     driver: bridge

@@ -1,6 +1,8 @@
-package com.bractits.apigateway;
+package com.bractits.apigateway.config;
 
 
+import com.bractits.apigateway.route.ProductRoute;
+import com.bractits.apigateway.route.SearchRoute;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +19,7 @@ public class RoutesConfig {
                         .uri("lb://PRODUCT-SERVICE")
                 )*/
                 .route("product", ProductRoute::route)
+                .route("search", SearchRoute::route)
                 .build();
     }
 }

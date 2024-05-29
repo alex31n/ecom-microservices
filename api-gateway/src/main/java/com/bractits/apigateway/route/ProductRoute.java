@@ -1,4 +1,4 @@
-package com.bractits.apigateway;
+package com.bractits.apigateway.route;
 
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.builder.Buildable;
