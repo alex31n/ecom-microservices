@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.bractits</groupId>
     <artifactId>product-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>product-service</name>
     <description>product-service</description>
 
@@ -21,6 +21,8 @@
     </properties>
 
     <dependencies>
+
+<!--        Starter-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter</artifactId>
@@ -51,18 +53,25 @@
         </dependency>
 
 
+<!--        Project Modules dependency-->
+        <!--<dependency>
+            <groupId>com.bractits</groupId>
+            <artifactId>common</artifactId>
+            <version>0.0.1</version>
+        </dependency>-->
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
-<!--        Spring Cloud Config Client-->
+        <!--        Spring Cloud Config Client-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
 
-<!--        Spring Retry-->
+        <!--        Spring Retry-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
@@ -94,6 +103,21 @@
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit-stream</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+        </dependency>
+
 
     </dependencies>
     <dependencyManagement>

@@ -13,10 +13,11 @@ import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
-@Transactional
 public class ProductService {
 
-    private ProductRepository repository;
+    private final ProductRepository repository;
+
+    private final ProductPublisher productPublisher;
 
     private final ProductMapper mapper = ProductMapper.INSTANCE;
 
@@ -28,15 +29,17 @@ public class ProductService {
                 .toList();
     }
 
-    public ProductDTO create(ProductDTO productDTO) {
+    @Transactional
+    public ProductDTO create(ProductDTO product) {
 
-        return Stream.of(productDTO)
+        return Stream.of(product)
                 .peek(emp -> emp.setId(null))
                 .map(mapper::mapToEntity)
                 .map(repository::save)
                 .map(mapper::mapToDto)
+                .peek(productPublisher::send)
                 .findFirst()
-                .orElse(productDTO);
+                .orElse(product);
     }
 
     public ProductDTO update(Long id, ProductDTO productDTO) {

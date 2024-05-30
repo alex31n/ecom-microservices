@@ -11,7 +11,7 @@
 
     <groupId>com.bractits</groupId>
     <artifactId>search-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>search-service</name>
     <description>search-service</description>
 
