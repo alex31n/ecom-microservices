@@ -6,6 +6,8 @@ import com.bractits.product.utils.event.Action;
 import com.bractits.product.utils.event.Status;
 import lombok.AllArgsConstructor;
 import org.springframework.cloud.stream.function.StreamBridge;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,6 +29,9 @@ public class ProductPublisher {
 //       return streamBridge.send("product-out-0",event);
 
 //        streamBridge.send("productSupplier-out-0", "This is test event LOL");
-        streamBridge.send("productSupplier-out-0", event);
+
+        Message<ProductEvent> message = MessageBuilder.withPayload(event)
+                .build();
+        streamBridge.send("productSupplier-out-0", message);
     }
 }

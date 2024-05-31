@@ -6,6 +6,7 @@ import com.bractits.product.utils.ExceptionUtils;
 import com.bractits.product.utils.mapper.ProductMapper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class ProductService {
 
     private final ProductRepository repository;
@@ -31,12 +33,11 @@ public class ProductService {
 
     @Transactional
     public ProductDTO create(ProductDTO product) {
-
         return Stream.of(product)
                 .peek(emp -> emp.setId(null))
-//                .map(mapper::mapToEntity)
-//                .map(repository::save)
-//                .map(mapper::mapToDto)
+                .map(mapper::mapToEntity)
+                .map(repository::saveAndFlush)
+                .map(mapper::mapToDto)
                 .peek(productPublisher::send)
                 .findFirst()
                 .orElse(product);

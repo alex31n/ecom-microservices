@@ -10,14 +10,13 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class ProductEvent{
 
-    private final UUID id = UUID.randomUUID();
+    private UUID id;
 
-    private final LocalDateTime date = LocalDateTime.now();
+    private LocalDateTime date;
 
     private ProductDTO product;
 
