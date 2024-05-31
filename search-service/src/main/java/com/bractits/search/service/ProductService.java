@@ -35,8 +35,11 @@ public class ProductService {
         log.error("ProductDTO: "+ product);
         log.debug("Debug ProductDTO: "+ product);
         return Stream.of(product)
-                .peek(emp -> emp.setId(null))
                 .map(mapper::mapToEntity)
+                .peek(emp -> emp.setId(null))
+                .peek(product1 -> {
+                    log.error("mapToEntity Product: "+ product1);
+                })
                 .map(repository::save)
                 .map(mapper::mapToDto)
                 .findFirst()

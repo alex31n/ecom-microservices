@@ -34,6 +34,7 @@ public class CloudStreamConfig {
             try {
                 ProductEvent event = mapper.readValue(message.getPayload(), ProductEvent.class);
                 System.out.println("productConsumer event: "+event.getProduct());
+                productHandler(event);
             } catch (JsonProcessingException e) {
                 log.error("JsonProcessingException",e);
                 throw new RuntimeException(e);
