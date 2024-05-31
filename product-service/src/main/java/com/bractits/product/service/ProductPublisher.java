@@ -12,12 +12,12 @@ import reactor.core.publisher.Sinks;
 @AllArgsConstructor
 public class ProductPublisher {
 
-    private final Sinks.Many<ProductEvent> productSinks;
+    //    private final Sinks.Many<ProductEvent> productSinks;
 //
-//    private final StreamBridge streamBridge;
+    private final StreamBridge streamBridge;
 
 
-    public void send(ProductDTO product){
+    public void send(ProductDTO product) {
         ProductEvent event = ProductEvent.builder()
                 .product(product)
                 .status(Status.CREATED)
@@ -25,6 +25,6 @@ public class ProductPublisher {
 
 //       return streamBridge.send("product-out-0",event);
 
-        productSinks.tryEmitNext(event);
+        streamBridge.send("productSupplier-out-0", "This is test event LOL");
     }
 }

@@ -34,9 +34,9 @@ public class ProductService {
 
         return Stream.of(product)
                 .peek(emp -> emp.setId(null))
-                .map(mapper::mapToEntity)
-                .map(repository::save)
-                .map(mapper::mapToDto)
+//                .map(mapper::mapToEntity)
+//                .map(repository::save)
+//                .map(mapper::mapToDto)
                 .peek(productPublisher::send)
                 .findFirst()
                 .orElse(product);
