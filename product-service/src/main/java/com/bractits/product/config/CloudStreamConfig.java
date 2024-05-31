@@ -1,16 +1,9 @@
 package com.bractits.product.config;
 
 import com.bractits.product.utils.event.ProductEvent;
-import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
-
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 
 @Configuration

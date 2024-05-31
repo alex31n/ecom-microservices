@@ -32,14 +32,9 @@ public class ProductService {
 
     @Transactional
     public ProductDTO create(ProductDTO product) {
-        log.error("ProductDTO: "+ product);
-        log.debug("Debug ProductDTO: "+ product);
         return Stream.of(product)
                 .map(mapper::mapToEntity)
                 .peek(emp -> emp.setId(null))
-                .peek(product1 -> {
-                    log.error("mapToEntity Product: "+ product1);
-                })
                 .map(repository::save)
                 .map(mapper::mapToDto)
                 .findFirst()
