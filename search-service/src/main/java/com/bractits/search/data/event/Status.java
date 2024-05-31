@@ -1,4 +1,4 @@
-package com.bractits.product.utils.event;
+package com.bractits.search.data.event;
 
 public enum Status {
 

@@ -5,13 +5,16 @@ import com.bractits.search.repository.ProductRepository;
 import com.bractits.search.utils.mapper.ProductMapper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
 @Transactional
+@Slf4j
 public class ProductService {
 
     private ProductRepository repository;
@@ -27,5 +30,16 @@ public class ProductService {
     }
 
 
-
+    @Transactional
+    public ProductDTO create(ProductDTO product) {
+        log.error("ProductDTO: "+ product);
+        log.debug("Debug ProductDTO: "+ product);
+        return Stream.of(product)
+                .peek(emp -> emp.setId(null))
+                .map(mapper::mapToEntity)
+                .map(repository::save)
+                .map(mapper::mapToDto)
+                .findFirst()
+                .orElse(product);
+    }
 }

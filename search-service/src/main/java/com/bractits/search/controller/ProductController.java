@@ -21,15 +21,20 @@ public class ProductController {
     @ResponseBody
     public ResponseEntity<?> findAll(){
         return ResponseEntity.ok(
-                service.findAll()
+                "find all"
         );
     }*/
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<?> search(@RequestParam(value = "q", required = false) String query){
+    public ResponseEntity<?> search(@RequestParam(value = "q", required = false) String query) {
+
+        if (query == null) {
+            return ResponseEntity.ok(service.findAll());
+        }
+
         return ResponseEntity.ok(
-                "Query: "+query
+                "Query: " + query
         );
     }
 

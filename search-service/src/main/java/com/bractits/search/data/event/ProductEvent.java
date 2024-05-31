@@ -1,7 +1,10 @@
-package com.bractits.product.utils.event;
+package com.bractits.search.data.event;
 
-import com.bractits.product.data.dto.ProductDTO;
-import lombok.*;
+import com.bractits.search.data.dto.ProductDTO;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
