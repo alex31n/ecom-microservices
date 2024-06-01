@@ -34,7 +34,7 @@ public class ProductController {
         }
 
         return ResponseEntity.ok(
-                "Query: " + query
+                service.search(query)
         );
     }
 

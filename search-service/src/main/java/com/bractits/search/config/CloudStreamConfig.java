@@ -23,8 +23,6 @@ public class CloudStreamConfig {
 
     @Bean
     public Consumer<Message<String>> productConsumer() {
-//        return this::productHandler;
-//        return message-> message.getPayload();
 
         return message-> {
 //            System.out.println("productConsumer payload: "+message.getPayload());
@@ -40,8 +38,11 @@ public class CloudStreamConfig {
     }
 
     private void productHandler(ProductEvent productEvent) {
-        switch (productEvent.getStatus()){
-            case SUCCESS -> productService.create(productEvent.getProduct());
+        log.error("productHandler: productEvent "+productEvent);
+        switch (productEvent.getAction()){
+            case CREATED -> productService.create(productEvent.getProduct());
+            case UPDATED -> productService.update(productEvent.getProduct().getId(), productEvent.getProduct());
+            case DELETED -> productService.deleteByProductId(productEvent.getProduct().getId());
             default -> {}
         }
 

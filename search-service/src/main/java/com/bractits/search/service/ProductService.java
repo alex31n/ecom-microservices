@@ -2,6 +2,7 @@ package com.bractits.search.service;
 
 import com.bractits.search.data.dto.ProductDTO;
 import com.bractits.search.repository.ProductRepository;
+import com.bractits.search.utils.ExceptionUtils;
 import com.bractits.search.utils.mapper.ProductMapper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,14 @@ public class ProductService {
 
     private final ProductMapper mapper = ProductMapper.INSTANCE;
 
+    public List<ProductDTO> search(String query) {
+
+        return repository.search(query)
+                .stream()
+                .map(mapper::mapToDto)
+                .toList();
+    }
+
     public List<ProductDTO> findAll() {
 
         return repository.findAll()
@@ -39,5 +48,25 @@ public class ProductService {
                 .map(mapper::mapToDto)
                 .findFirst()
                 .orElse(product);
+    }
+
+    public ProductDTO update(Long id, ProductDTO productDTO) {
+        return Stream.ofNullable(id)
+                .map(repository::findByProductId)
+                .map(product -> product.orElseThrow(() -> ExceptionUtils.notFoundException("Product not found")))
+                .peek(product -> {
+                    product.setTitle(productDTO.getTitle());
+                    product.setDescription(productDTO.getDescription());
+                    product.setPrice(productDTO.getPrice());
+                })
+                .map(repository::saveAndFlush)
+                .map(mapper::mapToDto)
+                .findFirst()
+                .orElse(productDTO);
+
+    }
+
+    public void deleteByProductId(Long id) {
+        repository.deleteByProductId(id);
     }
 }

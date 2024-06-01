@@ -5,6 +5,7 @@ import com.bractits.product.utils.event.ProductEvent;
 import com.bractits.product.utils.event.Action;
 import com.bractits.product.utils.event.Status;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class ProductPublisher {
 
     //    private final Sinks.Many<ProductEvent> productSinks;
@@ -19,16 +21,13 @@ public class ProductPublisher {
     private final StreamBridge streamBridge;
 
 
-    public void send(ProductDTO product) {
+    public void send(Action action, ProductDTO product) {
+        log.error("ProductPublisher send: action "+action+"  product "+product);
         ProductEvent event = ProductEvent.builder()
                 .product(product)
-                .action(Action.CREATED)
+                .action(action)
                 .status(Status.SUCCESS)
                 .build();
-
-//       return streamBridge.send("product-out-0",event);
-
-//        streamBridge.send("productSupplier-out-0", "This is test event LOL");
 
         Message<ProductEvent> message = MessageBuilder.withPayload(event)
                 .build();
