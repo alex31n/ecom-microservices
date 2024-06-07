@@ -41,3 +41,9 @@ services:
     volumes:
       - *maven-volume
       - ./search-service:/usr/src/app:rw
+
+  order:
+    <<: *default-app
+    volumes:
+      - *maven-volume
+      - ./order-service:/usr/src/app:rw

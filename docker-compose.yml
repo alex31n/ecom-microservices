@@ -164,6 +164,39 @@ services:
     networks:
       - net_backend
 
+  order:
+    container_name: order
+    ports:
+      - "${ORDER_SERVICE_PORT}:${ORDER_SERVICE_PORT}"
+    environment:
+      <<: *common-environment
+      SERVER_PORT: ${ORDER_SERVICE_PORT}
+      DATABASE_URI: jdbc:postgresql://host.docker.internal:${ORDER_DATABASE_PORT}/${ORDER_DATABASE}
+      DATABASE_USER: ${ORDER_DATABASE_USER}
+      DATABASE_PASSWORD: ${ORDER_DATABASE_PASSWORD}
+    restart: unless-stopped
+    networks:
+      - net_backend
+    depends_on:
+      - eureka
+      - config-server
+      - orderdb
+
+  orderdb:
+    image: postgres:16.3-alpine
+    container_name: orderdb
+    environment:
+      POSTGRES_DB: ${ORDER_DATABASE}
+      POSTGRES_USER: ${ORDER_DATABASE_USER}
+      POSTGRES_PASSWORD: ${ORDER_DATABASE_PASSWORD}
+    volumes:
+      - ./data/database/postgresql/order:/var/lib/postgresql/data
+    ports:
+      - "${ORDER_DATABASE_PORT}:5432"
+    restart: unless-stopped
+    networks:
+      - net_backend
+
 networks:
   net_backend:
     driver: bridge

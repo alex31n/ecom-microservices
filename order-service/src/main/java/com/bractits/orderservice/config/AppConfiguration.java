@@ -1,4 +1,4 @@
-package com.bractits.product.config;
+package com.bractits.orderservice.config;
 
 import jakarta.validation.constraints.NotNull;
 import org.springframework.context.annotation.Bean;
@@ -14,10 +14,10 @@ import java.util.Locale;
 @Configuration
 public class AppConfiguration {
 
-
     @Bean
     public Formatter<LocalDate> localDateFormatter() {
         return new Formatter<LocalDate>() {
+
             @Override
             public LocalDate parse(@NotNull String text, @NotNull Locale locale) throws ParseException {
                 return LocalDate.parse(text, DateTimeFormatter.ISO_DATE);
