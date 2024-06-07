@@ -47,3 +47,8 @@ services:
     volumes:
       - *maven-volume
       - ./order-service:/usr/src/app:rw
+  inventory:
+    <<: *default-app
+    volumes:
+      - *maven-volume
+      - ./inventory-service:/usr/src/app:rw

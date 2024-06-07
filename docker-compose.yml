@@ -197,6 +197,39 @@ services:
     networks:
       - net_backend
 
+  inventory:
+    container_name: inventory
+    ports:
+      - "${INVENTORY_SERVICE_PORT}:${INVENTORY_SERVICE_PORT}"
+    environment:
+      <<: *common-environment
+      SERVER_PORT: ${INVENTORY_SERVICE_PORT}
+      DATABASE_URI: jdbc:postgresql://host.docker.internal:${INVENTORY_DATABASE_PORT}/${INVENTORY_DATABASE}
+      DATABASE_USER: ${INVENTORY_DATABASE_USER}
+      DATABASE_PASSWORD: ${INVENTORY_DATABASE_PASSWORD}
+    restart: unless-stopped
+    networks:
+      - net_backend
+    depends_on:
+      - eureka
+      - config-server
+      - inventorydb
+
+  inventorydb:
+    image: postgres:16.3-alpine
+    container_name: inventorydb
+    environment:
+      POSTGRES_DB: ${INVENTORY_DATABASE}
+      POSTGRES_USER: ${INVENTORY_DATABASE_USER}
+      POSTGRES_PASSWORD: ${INVENTORY_DATABASE_PASSWORD}
+    volumes:
+      - ./data/database/postgresql/inventory:/var/lib/postgresql/data
+    ports:
+      - "${INVENTORY_DATABASE_PORT}:5432"
+    restart: unless-stopped
+    networks:
+      - net_backend
+
 networks:
   net_backend:
     driver: bridge
