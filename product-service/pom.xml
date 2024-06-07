@@ -52,14 +52,6 @@
             <scope>test</scope>
         </dependency>
 
-
-<!--        Project Modules dependency-->
-        <!--<dependency>
-            <groupId>com.bractits</groupId>
-            <artifactId>common</artifactId>
-            <version>0.0.1</version>
-        </dependency>-->
-
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
