@@ -52,3 +52,9 @@ services:
     volumes:
       - *maven-volume
       - ./inventory-service:/usr/src/app:rw
+
+  accounting:
+    <<: *default-app
+    volumes:
+      - *maven-volume
+      - ./accounting-service:/usr/src/app:rw

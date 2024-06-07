@@ -16,5 +16,20 @@ public class FallbackController {
         return "Search service is down!";
     }
 
+    @RequestMapping("/orderServiceFallback")
+    public String orderServiceFallback(){
+        return "Order service is down!";
+    }
+
+    @RequestMapping("/inventoryServiceFallback")
+    public String inventoryServiceFallback(){
+        return "Inventory service is down!";
+    }
+
+    @RequestMapping("/accountingServiceFallback")
+    public String accountingServiceFallback(){
+        return "Accounting service is down!";
+    }
+
 
 }

@@ -230,6 +230,39 @@ services:
     networks:
       - net_backend
 
+  accounting:
+    container_name: accounting
+    ports:
+      - "${ACCOUNTING_SERVICE_PORT}:${ACCOUNTING_SERVICE_PORT}"
+    environment:
+      <<: *common-environment
+      SERVER_PORT: ${ACCOUNTING_SERVICE_PORT}
+      DATABASE_URI: jdbc:postgresql://host.docker.internal:${ACCOUNTING_DATABASE_PORT}/${ACCOUNTING_DATABASE}
+      DATABASE_USER: ${ACCOUNTING_DATABASE_USER}
+      DATABASE_PASSWORD: ${ACCOUNTING_DATABASE_PASSWORD}
+    restart: unless-stopped
+    networks:
+      - net_backend
+    depends_on:
+      - eureka
+      - config-server
+      - accountingdb
+
+  accountingdb:
+    image: postgres:16.3-alpine
+    container_name: accountingdb
+    environment:
+      POSTGRES_DB: ${ACCOUNTING_DATABASE}
+      POSTGRES_USER: ${ACCOUNTING_DATABASE_USER}
+      POSTGRES_PASSWORD: ${ACCOUNTING_DATABASE_PASSWORD}
+    volumes:
+      - ./data/database/postgresql/accounting:/var/lib/postgresql/data
+    ports:
+      - "${ACCOUNTING_DATABASE_PORT}:5432"
+    restart: unless-stopped
+    networks:
+      - net_backend
+
 networks:
   net_backend:
     driver: bridge

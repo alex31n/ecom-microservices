@@ -16,6 +16,7 @@
 		<module>search-service</module>
 		<module>order-service</module>
 		<module>inventory-service</module>
+		<module>accounting-service</module>
 	</modules>
 
 </project>
