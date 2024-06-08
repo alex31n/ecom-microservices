@@ -19,7 +19,7 @@ public class ProductDTO {
     private Long id;
 
     @Size(max = 55)
-    @NotBlank(message = "Title must be empty.")
+    @NotBlank(message = "Title must not be empty.")
     private String title;
 
     @Size(max = 500)

@@ -45,8 +45,8 @@ services:
     networks:
       - net_backend
     depends_on:
-      - eureka
       - config-server
+      - eureka
 
   product:
     container_name: product
@@ -67,9 +67,24 @@ services:
     networks:
       - net_backend
     depends_on:
-      - eureka
       - config-server
+      - eureka
       - productdb
+
+  productdb:
+    image: postgres:16.3-alpine
+    container_name: productdb
+    environment:
+      POSTGRES_DB: ${PRODUCT_DATABASE}
+      POSTGRES_USER: ${PRODUCT_DATABASE_USER}
+      POSTGRES_PASSWORD: ${PRODUCT_DATABASE_PASSWORD}
+    volumes:
+      - ./data/database/postgresql/products:/var/lib/postgresql/data
+    ports:
+      - "${PRODUCT_DATABASE_PORT}:5432"
+    restart: unless-stopped
+    networks:
+      - net_backend
 
   prometheus:
     image: prom/prometheus:v2.52.0
@@ -100,21 +115,6 @@ services:
     networks:
       - net_backend
 
-  productdb:
-    image: postgres:16.3-alpine
-    container_name: productdb
-    environment:
-      POSTGRES_DB: ${PRODUCT_DATABASE}
-      POSTGRES_USER: ${PRODUCT_DATABASE_USER}
-      POSTGRES_PASSWORD: ${PRODUCT_DATABASE_PASSWORD}
-    volumes:
-      - ./data/database/postgresql/products:/var/lib/postgresql/data
-    ports:
-      - "${PRODUCT_DATABASE_PORT}:5432"
-    restart: unless-stopped
-    networks:
-      - net_backend
-
   search:
     container_name: search
     ports:
@@ -129,8 +129,8 @@ services:
     networks:
       - net_backend
     depends_on:
-      - eureka
       - config-server
+      - eureka
       - searchdb
 
   searchdb:
@@ -178,8 +178,8 @@ services:
     networks:
       - net_backend
     depends_on:
-      - eureka
       - config-server
+      - eureka
       - orderdb
 
   orderdb:
@@ -211,8 +211,8 @@ services:
     networks:
       - net_backend
     depends_on:
-      - eureka
       - config-server
+      - eureka
       - inventorydb
 
   inventorydb:
@@ -244,8 +244,8 @@ services:
     networks:
       - net_backend
     depends_on:
-      - eureka
       - config-server
+      - eureka
       - accountingdb
 
   accountingdb:
