@@ -22,8 +22,6 @@ public class OrderDTO {
 
     private Long id;
 
-    private String orderNo;
-
     @Column(name = "user_id", nullable = false)
     private Long userId;
 

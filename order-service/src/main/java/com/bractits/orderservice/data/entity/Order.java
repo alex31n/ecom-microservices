@@ -1,10 +1,9 @@
 package com.bractits.orderservice.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.extern.log4j.Log4j2;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -18,14 +17,12 @@ import java.util.List;
 @Builder
 @Entity(name = "Order")
 @Table(name = "\"order\"")
+@Log4j2
 public class Order {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "order_no", nullable = false, unique = true, length = 15)
-    private String orderNo;
 
     @Column(name = "user_id", nullable = false)
     private Long userId;
@@ -47,6 +44,25 @@ public class Order {
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
 
-    @OneToMany(mappedBy="order", cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
     private List<OrderItem> items;
+
+
+    @PrePersist
+    public void onPrePersist() {
+        this.setId(null);
+        this.setCreatedDate(LocalDateTime.now());
+        this.setUpdatedDate(LocalDateTime.now());
+
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        this.setUpdatedDate(LocalDateTime.now());
+    }
+
+
 }

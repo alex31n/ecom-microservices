@@ -20,12 +20,11 @@ import java.time.LocalDateTime;
 public class OrderItem {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name="order_id", nullable=false)
-    private Order order;
+    @Column(name="order_id")
+    private Long orderId;
 
     @Column(name = "item_id", nullable = false)
     private Long itemId;
@@ -43,4 +42,17 @@ public class OrderItem {
     @UpdateTimestamp
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
+
+
+    @PrePersist
+    public void onPrePersist() {
+        this.setId(null);
+        this.setCreatedDate(LocalDateTime.now());
+        this.setUpdatedDate(LocalDateTime.now());
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        this.setUpdatedDate(LocalDateTime.now());
+    }
 }
