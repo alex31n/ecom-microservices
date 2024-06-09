@@ -27,7 +27,7 @@ public class Order {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "amount",precision = 8, scale = 2)
+    @Column(name = "amount", precision = 8, scale = 2)
     private BigDecimal amount;
 
     @Column(name = "shipping_address", nullable = false)
@@ -56,6 +56,15 @@ public class Order {
         this.setId(null);
         this.setCreatedDate(LocalDateTime.now());
         this.setUpdatedDate(LocalDateTime.now());
+
+        this.amount = this.items.stream()
+                .map(item -> {
+                    BigDecimal quantity = item.getQuantity() == null ? BigDecimal.ZERO : BigDecimal.valueOf(item.getQuantity());
+                    BigDecimal price = item.getPrice() == null ? BigDecimal.ZERO : item.getPrice();
+                    return price.multiply(quantity);
+
+                })
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
     }
 
