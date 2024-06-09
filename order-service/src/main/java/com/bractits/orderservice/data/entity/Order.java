@@ -57,6 +57,18 @@ public class Order {
         this.setCreatedDate(LocalDateTime.now());
         this.setUpdatedDate(LocalDateTime.now());
 
+        updateAmount();
+
+    }
+
+    @PreUpdate
+    public void onPreUpdate() {
+        this.setUpdatedDate(LocalDateTime.now());
+        updateAmount();
+    }
+
+
+    private void updateAmount(){
         this.amount = this.items.stream()
                 .map(item -> {
                     BigDecimal quantity = item.getQuantity() == null ? BigDecimal.ZERO : BigDecimal.valueOf(item.getQuantity());
@@ -65,13 +77,6 @@ public class Order {
 
                 })
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-
     }
-
-    @PreUpdate
-    public void onPreUpdate() {
-        this.setUpdatedDate(LocalDateTime.now());
-    }
-
 
 }
