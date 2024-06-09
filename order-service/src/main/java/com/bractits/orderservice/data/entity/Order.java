@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -19,6 +20,10 @@ import java.util.List;
 @Table(name = "\"order\"")
 @Log4j2
 public class Order {
+
+    public enum Status {
+        PROCESSING, CANCELLED, WAITING_PAYMENT, PAID, SHIPPED, DELIVERED, REFUNDED
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +41,16 @@ public class Order {
     @Column(name = "order_date", updatable = false)
     private LocalDateTime orderDate;
 
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @Column(name = "payment_id")
+    private UUID paymentId;
+
+    @Column(name = "shipped_id")
+    private UUID shippedId;
+
     @CreationTimestamp
     @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate;
@@ -43,7 +58,6 @@ public class Order {
     @UpdateTimestamp
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
-
 
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -53,9 +67,10 @@ public class Order {
 
     @PrePersist
     public void onPrePersist() {
-        this.setId(null);
+//        this.setId(null);
         this.setCreatedDate(LocalDateTime.now());
         this.setUpdatedDate(LocalDateTime.now());
+        this.setStatus(Status.PROCESSING);
 
         updateAmount();
 
@@ -64,11 +79,11 @@ public class Order {
     @PreUpdate
     public void onPreUpdate() {
         this.setUpdatedDate(LocalDateTime.now());
-        updateAmount();
+//        updateAmount();
     }
 
 
-    private void updateAmount(){
+    private void updateAmount() {
         this.amount = this.items.stream()
                 .map(item -> {
                     BigDecimal quantity = item.getQuantity() == null ? BigDecimal.ZERO : BigDecimal.valueOf(item.getQuantity());

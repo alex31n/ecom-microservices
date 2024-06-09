@@ -2,6 +2,7 @@ package com.bractits.orderservice.service;
 
 
 import com.bractits.orderservice.data.dto.OrderDTO;
+import com.bractits.orderservice.data.entity.Order;
 import com.bractits.orderservice.repository.OrderItemRepository;
 import com.bractits.orderservice.repository.OrderRepository;
 import com.bractits.orderservice.utils.ExceptionUtils;
@@ -51,6 +52,26 @@ public class OrderService {
                 .orElse(request);
     }
 
+    public void cancelById(Long id) {
+        updateStatus(id, Order.Status.CANCELLED);
+    }
+
+    public OrderDTO updateStatus(Long id, Order.Status status) {
+
+        return Stream.ofNullable(id)
+                .map(repository::findById)
+                .map(order -> order.orElseThrow(() -> ExceptionUtils.notFoundException("Order not found")))
+                .peek(order -> {
+                    order.setStatus(status);
+                })
+                .map(repository::save)
+                .map(mapper::toDto)
+//                .peek(product -> productPublisher.send(Action.UPDATED, product))
+                .findFirst()
+                .orElse(null);
+
+    }
+
     public OrderDTO update(Long id, OrderDTO request) {
 
         return Stream.ofNullable(id)
@@ -69,8 +90,5 @@ public class OrderService {
 
     }
 
-    public void deleteById(Long id) {
-        repository.deleteById(id);
-//        productPublisher.send(Action.DELETED, ProductDTO.builder().id(id).build());
-    }
+
 }

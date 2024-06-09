@@ -1,5 +1,6 @@
 package com.bractits.orderservice.data.dto;
 
+import com.bractits.orderservice.data.entity.Order;
 import com.bractits.orderservice.data.entity.OrderItem;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -36,6 +38,12 @@ public class OrderDTO {
     private LocalDateTime createdDate;
 
     private LocalDateTime updatedDate;
+
+    private Order.Status status;
+
+    private UUID paymentId;
+
+    private UUID shippedId;
 
     private List<OrderItem> items=new ArrayList<>();
 }
