@@ -47,7 +47,6 @@ public class InventoryService {
 
     public InventoryDTO create(InventoryDTO inventoryDTO) {
 
-
         return Stream.of(inventoryDTO)
                 .peek(dto-> dto.setId(null))
                 .map(mapper::toEntity)
