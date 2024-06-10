@@ -2,7 +2,6 @@ package com.bractits.orderservice.data.dto;
 
 import com.bractits.orderservice.data.entity.Order;
 import com.bractits.orderservice.data.entity.OrderItem;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -24,7 +23,6 @@ public class OrderDTO {
 
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     private BigDecimal amount;

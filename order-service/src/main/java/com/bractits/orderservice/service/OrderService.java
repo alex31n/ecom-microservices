@@ -42,7 +42,7 @@ public class OrderService {
                     if (order.getId() != null) {
                         order.getItems().forEach(orderItem -> orderItem.setOrderId(order.getId()));
                         orderItemRepository.saveAll(order.getItems());
-                    }else {
+                    } else {
                         throw ExceptionUtils.badRequestException("Order is created!");
                     }
                 })
@@ -52,8 +52,8 @@ public class OrderService {
                 .orElse(request);
     }
 
-    public void cancelById(Long id) {
-        updateStatus(id, Order.Status.CANCELLED);
+    public OrderDTO cancelById(Long id) {
+        return updateStatus(id, Order.Status.CANCELLED);
     }
 
     public OrderDTO updateStatus(Long id, Order.Status status) {

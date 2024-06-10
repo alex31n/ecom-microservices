@@ -42,9 +42,12 @@ public class OrderController {
         );
     }
 
-    @DeleteMapping("/{id}")
+    @PostMapping("/{id}/cancel")
     @ResponseBody
-    public void delete(@PathVariable Long id){
-        service.deleteById(id);
+    public ResponseEntity<?> cancel(@PathVariable Long id){
+
+        return ResponseEntity.ok(
+                service.cancelById(id)
+        );
     }
 }
