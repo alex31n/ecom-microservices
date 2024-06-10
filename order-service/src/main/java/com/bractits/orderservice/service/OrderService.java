@@ -6,6 +6,7 @@ import com.bractits.orderservice.data.entity.Order;
 import com.bractits.orderservice.repository.OrderItemRepository;
 import com.bractits.orderservice.repository.OrderRepository;
 import com.bractits.orderservice.utils.ExceptionUtils;
+import com.bractits.orderservice.utils.event.Action;
 import com.bractits.orderservice.utils.mapper.OrderMapper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,8 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
 
     private final OrderMapper mapper;
+
+    private final OrderPublisher publisher;
 
     public List<OrderDTO> findAll() {
 
@@ -47,7 +50,7 @@ public class OrderService {
                     }
                 })
                 .map(mapper::toDto)
-//                .peek(product -> productPublisher.send(Action.CREATED, product))
+                .peek(order -> publisher.createOrder(Action.PLACED, order))
                 .findFirst()
                 .orElse(request);
     }
@@ -66,7 +69,7 @@ public class OrderService {
                 })
                 .map(repository::save)
                 .map(mapper::toDto)
-//                .peek(product -> productPublisher.send(Action.UPDATED, product))
+//                .peek(order -> publisher.createOrder(Action.UPDATED, product))
                 .findFirst()
                 .orElse(null);
 

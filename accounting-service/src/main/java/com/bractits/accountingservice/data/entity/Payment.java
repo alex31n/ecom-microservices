@@ -21,7 +21,10 @@ import java.util.UUID;
 public class Payment {
 
     public enum Status{
-        SUCCESS, FAILED
+        WAITING,
+        SUCCESS,
+        FAILED,
+        REFUNDED
     }
 
     @Id
@@ -48,7 +51,6 @@ public class Payment {
     @UpdateTimestamp
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
-
 
     @PrePersist
     public void onPrePersist() {

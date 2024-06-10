@@ -22,7 +22,13 @@ import java.util.UUID;
 public class Order {
 
     public enum Status {
-        PROCESSING, CANCELLED, WAITING_PAYMENT, PAID, SHIPPED, DELIVERED, REFUNDED
+        PLACED,
+        CANCELLED,
+        PAYMENT_SUCCESS,
+        PAYMENT_FAILED,
+        SHIPPED,
+        DELIVERED,
+        REFUNDED
     }
 
     @Id
@@ -70,7 +76,7 @@ public class Order {
 //        this.setId(null);
         this.setCreatedDate(LocalDateTime.now());
         this.setUpdatedDate(LocalDateTime.now());
-        this.setStatus(Status.PROCESSING);
+        this.setStatus(Status.PLACED);
 
         updateAmount();
 

@@ -20,7 +20,10 @@ import java.util.UUID;
 public class PaymentDTO {
 
     public enum Status{
-        SUCCESS, FAILED
+        WAITING,
+        SUCCESS,
+        FAILED,
+        REFUNDED
     }
 
     @Id
