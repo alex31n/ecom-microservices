@@ -1,6 +1,5 @@
 package com.bractits.orderservice.data.dto;
 
-import com.bractits.orderservice.data.entity.Order;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
@@ -21,7 +20,7 @@ public class OrderItemDTO {
 
     private Long id;
 
-    private Order order;
+//    private Order order;
 
     @NotNull(message = "Item Id must not be null.")
     @Min(value = 1)

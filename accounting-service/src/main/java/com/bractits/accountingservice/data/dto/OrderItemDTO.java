@@ -20,7 +20,7 @@ public class OrderItemDTO {
 
     private Long id;
 
-    private Long orderId;
+//    private Long orderId;
 
     @NotNull(message = "Item Id must not be null.")
     @Min(value = 1)
