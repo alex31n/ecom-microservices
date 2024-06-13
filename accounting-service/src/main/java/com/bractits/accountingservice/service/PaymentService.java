@@ -3,6 +3,7 @@ package com.bractits.accountingservice.service;
 
 import com.bractits.accountingservice.data.dto.PaymentDTO;
 import com.bractits.accountingservice.repository.PaymentRepository;
+import com.bractits.accountingservice.utils.event.OrderEvent;
 import com.bractits.accountingservice.utils.mapper.PaymentMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,4 +44,7 @@ public class PaymentService {
                 .orElse(requestDTO);
     }
 
+    public void createOrUpdateFromOrderEvent(OrderEvent orderEvent) {
+
+    }
 }
