@@ -21,7 +21,7 @@ public class OrderPublisher {
     private final StreamBridge streamBridge;
 
 
-    public void createOrder(Action action, OrderDTO obj) {
+    public void publish(Action action, OrderDTO obj) {
         log.error("OrderPublisher createOrder: action "+action+"  obj "+obj);
         OrderEvent event = OrderEvent.builder()
                 .data(obj)

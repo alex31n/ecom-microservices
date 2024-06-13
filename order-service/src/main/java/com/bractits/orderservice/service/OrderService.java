@@ -50,13 +50,18 @@ public class OrderService {
                     }
                 })
                 .map(mapper::toDto)
-                .peek(order -> publisher.createOrder(Action.PLACED, order))
+                .peek(order -> publisher.publish(Action.PLACED, order))
                 .findFirst()
                 .orElse(request);
     }
 
     public OrderDTO cancelById(Long id) {
-        return updateStatus(id, Order.Status.CANCELLED);
+        OrderDTO order =  updateStatus(id, Order.Status.CANCELLED);
+        if (order!=null){
+            publisher.publish(Action.CANCELLED,order);
+        }
+
+        return order;
     }
 
     public OrderDTO updateStatus(Long id, Order.Status status) {
@@ -64,9 +69,7 @@ public class OrderService {
         return Stream.ofNullable(id)
                 .map(repository::findById)
                 .map(order -> order.orElseThrow(() -> ExceptionUtils.notFoundException("Order not found")))
-                .peek(order -> {
-                    order.setStatus(status);
-                })
+                .peek(order -> order.setStatus(status))
                 .map(repository::save)
                 .map(mapper::toDto)
 //                .peek(order -> publisher.createOrder(Action.UPDATED, product))
