@@ -1,6 +1,5 @@
-package com.bractits.orderservice.data.dto;
+package com.bractits.accountingservice.data.dto;
 
-import com.bractits.orderservice.data.entity.Order;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,6 +19,16 @@ import java.util.UUID;
 @Builder
 public class OrderDTO {
 
+    public enum Status {
+        PLACED,
+        CANCELLED,
+        PAYMENT_SUCCESS,
+        PAYMENT_FAILED,
+        SHIPPED,
+        DELIVERED,
+        REFUNDED
+    }
+
     private Long id;
 
     private Long userId;
@@ -36,11 +45,11 @@ public class OrderDTO {
 
     private LocalDateTime updatedDate;
 
-    private Order.Status status;
+    private Status status;
 
     private UUID paymentId;
 
     private UUID shippedId;
 
-    private List<OrderItemDTO> items=new ArrayList<>();
+    private List<OrderItemDTO> items= new ArrayList<>();
 }
