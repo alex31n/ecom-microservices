@@ -33,18 +33,18 @@ public class CloudStreamConfig {
 //                throw new RuntimeException(e);
             }*/
 
-            orderEventHandler(message.getPayload());
-
+//            orderEventHandler(message.getPayload());
+            paymentService.createOrUpdateFromOrderEvent(message.getPayload());
         };
     }
 
-    private void orderEventHandler(OrderEvent orderEvent){
+    /*private void orderEventHandler(OrderEvent orderEvent){
         System.out.println("orderEventHandler OrderEvent: "+orderEvent);
         paymentService.createOrUpdateFromOrderEvent(orderEvent);
-        /*switch (orderEvent.getAction()){
+        *//*switch (orderEvent.getAction()){
             case PLACED -> paymentService.createOrUpdateFromOrderEvent(orderEvent);
             case CANCELLED -> paymentService.createOrUpdateFromOrderEvent(orderEvent);
-        }*/
-    }
+        }*//*
+    }*/
 
 }

@@ -32,7 +32,7 @@ public class Payment {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "transaction_id", nullable = false)
+    @Column(name = "transaction_id")
     private UUID transactionId;
 
     @Column(name = "order_id", nullable = false)

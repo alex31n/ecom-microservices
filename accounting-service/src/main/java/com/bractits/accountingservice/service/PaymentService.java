@@ -1,6 +1,5 @@
 package com.bractits.accountingservice.service;
 
-
 import com.bractits.accountingservice.data.dto.OrderDTO;
 import com.bractits.accountingservice.data.dto.PaymentDTO;
 import com.bractits.accountingservice.data.entity.Payment;
@@ -13,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -75,7 +73,9 @@ public class PaymentService {
 
     public void orderCancel(OrderEvent orderEvent) {
 
-        if (orderEvent == null || orderEvent.getData() == null || orderEvent.getData().getId() == null) {
+        if (orderEvent == null
+                || orderEvent.getData() == null
+                || orderEvent.getData().getId() == null) {
             return;
         }
 
@@ -102,6 +102,5 @@ public class PaymentService {
                 .amount(order.getAmount())
                 .status(status)
                 .build();
-
     }
 }
