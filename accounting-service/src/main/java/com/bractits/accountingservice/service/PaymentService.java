@@ -2,6 +2,7 @@ package com.bractits.accountingservice.service;
 
 import com.bractits.accountingservice.data.dto.OrderDTO;
 import com.bractits.accountingservice.data.dto.PaymentDTO;
+import com.bractits.accountingservice.data.dto.PaymentPaidDTO;
 import com.bractits.accountingservice.data.entity.Payment;
 import com.bractits.accountingservice.repository.PaymentRepository;
 import com.bractits.accountingservice.utils.ExceptionUtils;
@@ -25,7 +26,7 @@ public class PaymentService {
     private final PaymentMapper mapper;
 
 
-    public List<PaymentDTO> findAll(UUID transactionId) {
+    public List<PaymentDTO> findAll(String transactionId) {
 
         if (transactionId == null) {
             return repository.findAll().stream().map(mapper::toDto).toList();
@@ -102,5 +103,21 @@ public class PaymentService {
                 .amount(order.getAmount())
                 .status(status)
                 .build();
+    }
+
+    public PaymentDTO paymentPaid(PaymentPaidDTO request) {
+        return Stream.ofNullable(request)
+                .map(PaymentPaidDTO::getUid)
+                .map(repository::findByUid)
+                .map(obj -> obj.orElseThrow(() -> ExceptionUtils.notFoundException("Payment information not found")))
+                .peek(obj -> {
+                    obj.setTransactionId(request.getTransactionId());
+                    obj.setStatus(Payment.Status.PAID);
+                })
+                .map(repository::saveAndFlush)
+                .map(mapper::toDto)
+//                .peek(paymentDto -> productPublisher.send(Action.UPDATED, paymentDto))
+                .findFirst()
+                .orElse(null);
     }
 }

@@ -16,8 +16,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
-@Table(name = "account")
 public class PaymentDTO {
 
     /*public enum Status{
@@ -27,12 +25,13 @@ public class PaymentDTO {
         REFUNDED
     }*/
 
-    @Id
-    @GeneratedValue
+
     private Long id;
 
-    @NotNull(message = "Transaction Id must not be null")
-    private UUID transactionId;
+    @NotNull(message = "Uid Id must not be null")
+    private String uid;
+
+    private String transactionId;
 
     @NotNull(message = "order Id must not be null")
     private Long orderId;

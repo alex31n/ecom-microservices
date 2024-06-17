@@ -32,8 +32,11 @@ public class Payment {
     @GeneratedValue
     private Long id;
 
+    @Column(name = "uid",nullable = false)
+    private String uid;
+
     @Column(name = "transaction_id")
-    private UUID transactionId;
+    private String transactionId;
 
     @Column(name = "order_id", nullable = false)
     private Long orderId;
@@ -55,6 +58,7 @@ public class Payment {
 
     @PrePersist
     public void onPrePersist() {
+        this.uid = UUID.randomUUID().toString();
         this.setCreatedDate(LocalDateTime.now());
         this.setUpdatedDate(LocalDateTime.now());
     }
