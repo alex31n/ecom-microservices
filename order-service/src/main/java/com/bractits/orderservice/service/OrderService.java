@@ -3,6 +3,7 @@ package com.bractits.orderservice.service;
 
 import com.bractits.orderservice.data.dto.OrderDTO;
 import com.bractits.orderservice.data.entity.Order;
+import com.bractits.orderservice.orchestrator.OrderPublisher;
 import com.bractits.orderservice.repository.OrderItemRepository;
 import com.bractits.orderservice.repository.OrderRepository;
 import com.bractits.orderservice.utils.ExceptionUtils;

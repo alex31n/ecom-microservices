@@ -1,5 +1,6 @@
 package com.bractits.accountingservice.data.dto;
 
+import com.bractits.accountingservice.data.entity.Payment;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -19,12 +20,12 @@ import java.util.UUID;
 @Table(name = "account")
 public class PaymentDTO {
 
-    public enum Status{
+    /*public enum Status{
         WAITING,
         SUCCESS,
         FAILED,
         REFUNDED
-    }
+    }*/
 
     @Id
     @GeneratedValue
@@ -40,7 +41,7 @@ public class PaymentDTO {
     private BigDecimal amount;
 
     @NotNull(message = "Status must not be null")
-    private Status status;
+    private Payment.Status status;
 
     private LocalDateTime createdDate;
 

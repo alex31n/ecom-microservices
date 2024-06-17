@@ -1,4 +1,4 @@
-package com.bractits.orderservice.service;
+package com.bractits.orderservice.orchestrator;
 
 
 import com.bractits.orderservice.data.dto.OrderDTO;

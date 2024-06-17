@@ -1,8 +1,11 @@
 package com.bractits.accountingservice.service;
 
 
+import com.bractits.accountingservice.data.dto.OrderDTO;
 import com.bractits.accountingservice.data.dto.PaymentDTO;
+import com.bractits.accountingservice.data.entity.Payment;
 import com.bractits.accountingservice.repository.PaymentRepository;
+import com.bractits.accountingservice.utils.ExceptionUtils;
 import com.bractits.accountingservice.utils.event.OrderEvent;
 import com.bractits.accountingservice.utils.mapper.PaymentMapper;
 import lombok.AllArgsConstructor;
@@ -10,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -44,7 +48,60 @@ public class PaymentService {
                 .orElse(requestDTO);
     }
 
+    public PaymentDTO update(Long id, PaymentDTO requestDto) {
+
+        return Stream.ofNullable(id)
+                .map(repository::findById)
+                .map(obj -> obj.orElseThrow(() -> ExceptionUtils.notFoundException("Payment information not found")))
+                .peek(obj -> {
+                    obj.setTransactionId(requestDto.getTransactionId());
+                    obj.setStatus(requestDto.getStatus());
+                })
+                .map(repository::saveAndFlush)
+                .map(mapper::toDto)
+//                .peek(paymentDto -> productPublisher.send(Action.UPDATED, paymentDto))
+                .findFirst()
+                .orElse(requestDto);
+
+    }
+
     public void createOrUpdateFromOrderEvent(OrderEvent orderEvent) {
+
+        switch (orderEvent.getAction()) {
+            case PLACED -> create(orderDtoToDto(orderEvent.getData(), Payment.Status.WAITING));
+            case CANCELLED -> orderCancel(orderEvent);
+        }
+    }
+
+    public void orderCancel(OrderEvent orderEvent) {
+
+        if (orderEvent == null || orderEvent.getData() == null || orderEvent.getData().getId() == null) {
+            return;
+        }
+
+        Payment payment = repository.findByOrderId(orderEvent.getData().getId())
+                .orElse(null);
+
+        if (payment == null) {
+            return;
+        }
+
+        if (payment.getStatus() == Payment.Status.PAID) {
+            payment.setStatus(Payment.Status.REFUNDED);
+        } else {
+            payment.setStatus(Payment.Status.CANCELED);
+        }
+
+        repository.save(payment);
+
+    }
+
+    PaymentDTO orderDtoToDto(OrderDTO order, Payment.Status status) {
+        return PaymentDTO.builder()
+                .orderId(order.getId())
+                .amount(order.getAmount())
+                .status(status)
+                .build();
 
     }
 }

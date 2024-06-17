@@ -40,8 +40,9 @@ public class CloudStreamConfig {
 
     private void orderEventHandler(OrderEvent orderEvent){
         System.out.println("orderEventHandler OrderEvent: "+orderEvent);
+        paymentService.createOrUpdateFromOrderEvent(orderEvent);
         /*switch (orderEvent.getAction()){
-            case PLACED -> paymentService.createOrUpdateFromOrderEvent(orderEvent.);
+            case PLACED -> paymentService.createOrUpdateFromOrderEvent(orderEvent);
             case CANCELLED -> paymentService.createOrUpdateFromOrderEvent(orderEvent);
         }*/
     }
