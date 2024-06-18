@@ -7,13 +7,13 @@ import com.bractits.accountingservice.data.entity.Payment;
 import com.bractits.accountingservice.repository.PaymentRepository;
 import com.bractits.accountingservice.utils.ExceptionUtils;
 import com.bractits.accountingservice.utils.event.OrderEvent;
+import com.bractits.accountingservice.utils.event.PaymentAction;
 import com.bractits.accountingservice.utils.mapper.PaymentMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 @Service
@@ -24,6 +24,8 @@ public class PaymentService {
     private final PaymentRepository repository;
 
     private final PaymentMapper mapper;
+
+    private final PaymentPublisher publisher;
 
 
     public List<PaymentDTO> findAll(String transactionId) {
@@ -116,7 +118,7 @@ public class PaymentService {
                 })
                 .map(repository::saveAndFlush)
                 .map(mapper::toDto)
-//                .peek(paymentDto -> productPublisher.send(Action.UPDATED, paymentDto))
+                .peek(paymentDto -> publisher.send(PaymentAction.PAID, paymentDto))
                 .findFirst()
                 .orElse(null);
     }
