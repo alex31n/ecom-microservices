@@ -107,7 +107,7 @@ public class PaymentService {
                 .build();
     }
 
-    public PaymentDTO paymentPaid(PaymentPaidDTO request) {
+    /*public PaymentDTO paymentPaid(PaymentPaidDTO request) {
         return Stream.ofNullable(request)
                 .map(PaymentPaidDTO::getUid)
                 .map(repository::findByUid)
@@ -121,5 +121,18 @@ public class PaymentService {
                 .peek(paymentDto -> publisher.send(PaymentAction.PAID, paymentDto))
                 .findFirst()
                 .orElse(null);
+    }*/
+
+    public PaymentPaidDTO paymentPaid(PaymentPaidDTO request) {
+
+        PaymentDTO paymentDTO = PaymentDTO.builder()
+                .uid(request.getUid())
+                .transactionId(request.getTransactionId())
+                .amount(request.getAmount())
+                .build();
+
+        publisher.send(PaymentAction.PAID, paymentDTO);
+
+        return request;
     }
 }
