@@ -23,8 +23,8 @@ public class CloudStreamConfig {
     public Consumer<Message<OrderEvent>> orderCreatedConsumer() {
 
         return message -> {
-//            System.out.println("orderCreatedConsumer headers: " + message.getHeaders());
-//            System.out.println("orderCreatedConsumer payload: " + message.getPayload());
+            System.out.println("orderCreatedConsumer headers: " + message.getHeaders());
+            System.out.println("orderCreatedConsumer payload: " + message.getPayload());
 
             OrderDTO event = message.getPayload().getData();
             paymentService.create(
