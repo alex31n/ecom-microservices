@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -107,12 +108,17 @@ public class PaymentService {
                 .build();
     }
 
-    /*public PaymentDTO paymentPaid(PaymentPaidDTO request) {
+    public PaymentDTO paymentPaid(PaymentPaidDTO request) {
         return Stream.ofNullable(request)
                 .map(PaymentPaidDTO::getUid)
                 .map(repository::findByUid)
                 .map(obj -> obj.orElseThrow(() -> ExceptionUtils.notFoundException("Payment information not found")))
                 .peek(obj -> {
+
+                    if (obj.getAmount().compareTo(request.getAmount()) != 0) {
+                        throw ExceptionUtils.badRequestException("Payment amount should be " + obj.getAmount().setScale(0, RoundingMode.HALF_UP));
+                    }
+
                     obj.setTransactionId(request.getTransactionId());
                     obj.setStatus(Payment.Status.PAID);
                 })
@@ -121,9 +127,9 @@ public class PaymentService {
                 .peek(paymentDto -> publisher.send(PaymentAction.PAID, paymentDto))
                 .findFirst()
                 .orElse(null);
-    }*/
+    }
 
-    public PaymentPaidDTO paymentPaid(PaymentPaidDTO request) {
+    /*public PaymentPaidDTO paymentPaid(PaymentPaidDTO request) {
 
         PaymentDTO paymentDTO = PaymentDTO.builder()
                 .uid(request.getUid())
@@ -134,5 +140,5 @@ public class PaymentService {
         publisher.send(PaymentAction.PAID, paymentDTO);
 
         return request;
-    }
+    }*/
 }
