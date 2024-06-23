@@ -1,12 +1,10 @@
 package com.bractits.accountingservice.service;
 
-import com.bractits.accountingservice.data.dto.OrderDTO;
 import com.bractits.accountingservice.data.dto.PaymentDTO;
 import com.bractits.accountingservice.data.dto.PaymentPaidDTO;
 import com.bractits.accountingservice.data.entity.Payment;
 import com.bractits.accountingservice.repository.PaymentRepository;
 import com.bractits.accountingservice.utils.ExceptionUtils;
-import com.bractits.accountingservice.utils.event.OrderEvent;
 import com.bractits.accountingservice.utils.event.PaymentAction;
 import com.bractits.accountingservice.utils.mapper.PaymentMapper;
 import lombok.AllArgsConstructor;
@@ -67,15 +65,15 @@ public class PaymentService {
 
     }
 
-    public void createOrUpdateFromOrderEvent(OrderEvent orderEvent) {
+    /*public void createOrUpdateFromOrderEvent(OrderEvent orderEvent) {
 
         switch (orderEvent.getAction()) {
             case PLACED -> create(orderDtoToDto(orderEvent.getData(), Payment.Status.WAITING));
             case CANCELLED -> orderCancel(orderEvent);
         }
-    }
+    }*/
 
-    public void orderCancel(OrderEvent orderEvent) {
+    /*public void orderCancel(OrderEvent orderEvent) {
 
         if (orderEvent == null
                 || orderEvent.getData() == null
@@ -98,15 +96,15 @@ public class PaymentService {
 
         repository.save(payment);
 
-    }
+    }*/
 
-    PaymentDTO orderDtoToDto(OrderDTO order, Payment.Status status) {
+    /*PaymentDTO orderDtoToDto(OrderDTO order, Payment.Status status) {
         return PaymentDTO.builder()
                 .orderId(order.getId())
                 .amount(order.getAmount())
                 .status(status)
                 .build();
-    }
+    }*/
 
     public PaymentDTO paymentPaid(PaymentPaidDTO request) {
         return Stream.ofNullable(request)

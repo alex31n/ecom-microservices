@@ -1,13 +1,11 @@
 package com.bractits.accountingservice.utils.event;
 
-import com.bractits.accountingservice.data.dto.OrderDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+import java.math.BigDecimal;
 
 @Data
 @Builder
@@ -15,14 +13,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class OrderEvent {
 
-    private final UUID id = UUID.randomUUID();
+    private Long orderId;
 
-    private final LocalDateTime date = LocalDateTime.now();
+    private Long userId;
 
-    private OrderDTO data;
-
-    private OrderAction action;
-
-    private Status status;
+    private BigDecimal amount;
 
 }

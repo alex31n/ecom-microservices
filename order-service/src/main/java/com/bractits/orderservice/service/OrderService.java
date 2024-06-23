@@ -7,7 +7,6 @@ import com.bractits.orderservice.orchestrator.OrderPublisher;
 import com.bractits.orderservice.repository.OrderItemRepository;
 import com.bractits.orderservice.repository.OrderRepository;
 import com.bractits.orderservice.utils.ExceptionUtils;
-import com.bractits.orderservice.utils.event.Action;
 import com.bractits.orderservice.utils.mapper.OrderMapper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -51,7 +50,7 @@ public class OrderService {
                     }
                 })
                 .map(mapper::toDto)
-                .peek(order -> publisher.publish(Action.PLACED, order))
+                .peek(publisher::orderCreated)
                 .findFirst()
                 .orElse(request);
     }
@@ -59,7 +58,7 @@ public class OrderService {
     public OrderDTO cancelById(Long id) {
         OrderDTO order =  updateStatus(id, Order.Status.CANCELLED);
         if (order!=null){
-            publisher.publish(Action.CANCELLED,order);
+            publisher.orderCancelled(order);
         }
 
         return order;
@@ -98,4 +97,10 @@ public class OrderService {
     }
 
 
+    /*public OrderDTO orderProcessingAfterPaymentSuccess(Long orderId){
+
+        updateStatus(orderId, Order.Status.PAYMENT_SUCCESS);
+
+
+    }*/
 }

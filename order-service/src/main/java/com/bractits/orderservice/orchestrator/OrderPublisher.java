@@ -1,10 +1,7 @@
 package com.bractits.orderservice.orchestrator;
 
-
 import com.bractits.orderservice.data.dto.OrderDTO;
-import com.bractits.orderservice.utils.event.Action;
 import com.bractits.orderservice.utils.event.OrderEvent;
-import com.bractits.orderservice.utils.event.Status;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.function.StreamBridge;
@@ -21,16 +18,27 @@ public class OrderPublisher {
     private final StreamBridge streamBridge;
 
 
-    public void publish(Action action, OrderDTO obj) {
-        log.error("OrderPublisher createOrder: action "+action+"  obj "+obj);
+    public void orderCreated(OrderDTO obj) {
         OrderEvent event = OrderEvent.builder()
+                .orderId(obj.getId())
+                .userId(obj.getUserId())
+                .amount(obj.getAmount())
+                .build();
+
+        Message<OrderEvent> message = MessageBuilder.withPayload(event)
+                .build();
+        streamBridge.send("order.created", message);
+    }
+
+    public void orderCancelled(OrderDTO obj) {
+        /*OrderEvent event = OrderEvent.builder()
                 .data(obj)
-                .action(action)
                 .status(Status.SUCCESS)
                 .build();
 
         Message<OrderEvent> message = MessageBuilder.withPayload(event)
                 .build();
-        streamBridge.send("orderSupplier-out-0", message);
+        streamBridge.send("order.cancelled", message);*/
     }
+
 }
