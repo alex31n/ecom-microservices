@@ -1,6 +1,6 @@
-package com.bractits.accountingservice.utils.event;
+package com.bractits.inventoryservice.utils.event;
 
-import com.bractits.accountingservice.data.dto.OrderDTO;
+import com.bractits.inventoryservice.data.dto.OrderDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

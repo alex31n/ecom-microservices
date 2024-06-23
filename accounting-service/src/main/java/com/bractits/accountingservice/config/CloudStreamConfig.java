@@ -1,5 +1,6 @@
 package com.bractits.accountingservice.config;
 
+import com.bractits.accountingservice.data.dto.OrderDTO;
 import com.bractits.accountingservice.data.dto.PaymentDTO;
 import com.bractits.accountingservice.data.entity.Payment;
 import com.bractits.accountingservice.service.PaymentService;
@@ -25,10 +26,10 @@ public class CloudStreamConfig {
 //            System.out.println("orderCreatedConsumer headers: " + message.getHeaders());
 //            System.out.println("orderCreatedConsumer payload: " + message.getPayload());
 
-            OrderEvent event = message.getPayload();
+            OrderDTO event = message.getPayload().getData();
             paymentService.create(
                     PaymentDTO.builder()
-                            .orderId(event.getOrderId())
+                            .orderId(event.getId())
                             .amount(event.getAmount())
                             .status(Payment.Status.WAITING)
                             .build()

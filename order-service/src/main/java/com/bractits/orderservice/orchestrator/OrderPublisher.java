@@ -20,9 +20,7 @@ public class OrderPublisher {
 
     public void orderCreated(OrderDTO obj) {
         OrderEvent event = OrderEvent.builder()
-                .orderId(obj.getId())
-                .userId(obj.getUserId())
-                .amount(obj.getAmount())
+                .data(obj)
                 .build();
 
         Message<OrderEvent> message = MessageBuilder.withPayload(event)
